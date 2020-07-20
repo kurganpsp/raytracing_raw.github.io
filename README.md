@@ -47,93 +47,83 @@ Contiene la fuente específica de cualquier libro. No se comparte la fuente fuer
 
 Código fuente
 -----------
-### Intent
+### Intención
 Este repositorio no está destinado a actuar como su propio tutorial. La fuente presentada aquí se proporciona así puedes comparar tu trabajo al avanzar en el libro. Recomendamos encarecidamente leer y
 siguiendo junto con el libro para entender la fuente.
 
 
-### Downloading The Source Code
-The [GitHub home][] for this project contains all source and documentation associated with the _Ray
-Tracing in One Weekend_ series of books. To clone or download the source code, see the green "Clone
-or download" button in the upper right of the project home page.
-
+### Descargar el código fuente
 El [GitHub home][] para este proyecto contiene toda la fuente y documentación asociada con el _Ray
 Tracing en un fin de semana_ serie de libros. Para clonar o descargar el código fuente, vea el verde "Clonar o descargar "en la esquina superior derecha de la página de inicio del proyecto.
 
-### Programming Language
-This book is written in C++, and uses some modern features of C++11. The language and features were
-chosen to be broadly understood by the largest collection of programmers. It is not meant to
-represent ideal C++ code.
+### Lenguaje de programación
+Este libro está escrito en C ++ y utiliza algunas características modernas de C ++ 11. El lenguaje y las características fueron elegido para ser ampliamente entendido por la mayor colección de programadores. No es para representa el código ideal de C ++.
 
-### Implementations in Other Languages
-The _Ray Tracing in One Weekend_ series has a long history of implementations in other programming
-languages (see [_Implementations in Other Languages_][implementations]), and across all three
-primary operating systems. Feel free to add your own implementation to the list!
+### Implementaciones en otros lenguajes
+La serie _Ray Tracing in One Weekend_ tiene una larga historia de implementaciones en otros lenguages de 
+programación (consulte [_Implementations in Other Languages_][implementations]), y en los tres
+sistemas operativos primarios ¡No dude en agregar su propia implementación a la lista!
 
-### Branches
-The `master` branch contains the code at latest release. All ongoing development, with all of the
-latest changes, can be found in the `dev-patch`, `dev-minor`, and `dev-major` branches.
+### Ramas
+La rama `master` contiene el código de la última versión. Todo el desarrollo continuo, con todos los
+Los últimos cambios se pueden encontrar en las ramas `dev-patch`,` dev-minor` y `dev-major`.
 
 
-Building and Running
+Construyendo y corriendo
 ---------------------
-Copies of source are provided for you to check your work and compare against. If you wish to build
-the provided source, the project uses CMake. At the root of the project directory, run the following
-commands to build the debug version of every executable:
+Se proporcionan copias de la fuente para que pueda verificar su trabajo y compararlo. Si deseas construir
+la fuente provista, el proyecto usa CMake. En la raíz del directorio del proyecto, ejecute lo siguiente
+comandos para construir la versión de depuración de cada ejecutable:
 
     $ cmake -B build
     $ cmake --build build
 
-You can specify the target with the `--target <program>` option, where the program may be
-`inOneWeekend`, `theNextWeek`, `theRestOfYourLife`, or any of the demonstration programs. By default
-(with no `--target` option), CMake will build all targets.
+Puede especificar el objetivo con la opción `--target <program>`, donde el programa puede ser `inOneWeekend`,` theNextWeek`, `theRestOfYourLife`, o cualquiera de los programas de demostración. Por defecto (sin la opción `--target`), CMake construirá todos los objetivos.
 
-On Windows, you can build either `debug` (the default) or `release` (the optimized version). To
-specify this, use the `--config <debug|release>` option.
+En Windows, puede compilar `debug` (el valor predeterminado) o` release` (la versión optimizada). Para
+especificar esto, use la opción `--config <debug|release>`.
 
-### CMake GUI on Windows
-You may choose to use the CMake GUI when building on windows.
+### CMake GUI en Windows
+Puede optar por utilizar la GUI de CMake al construir en Windows.
 
-1. Open CMake GUI on Windows
-2. For "Where is the source code:", set to location of the copied directory. For example,
-   `C:\Users\Peter\raytracing.github.io`.
-3. Add the folder "build" within the location of the copied directory. For example,
-   `C:\Users\Peter\raytracing.github.io\build`.
-4. For "Where to build the binaries", set this to the newly-created build directory.
-5. Click "Configure".
-6. For "Specify the generator for this project", set this to your version of Visual Studio.
-7. Click "Done".
-8. Click "Configure" again.
-9. Click "Generate".
-10. In File Explorer, navigate to build directory and double click the newly-created `.sln` project.
-11. Build in Visual Studio.
+1. Abra CMake GUI en Windows
+2. Para "Dónde está el código fuente:", establezca la ubicación del directorio copiado. Por ejemplo,
+    `C:\Usuarios\Peter\raytracing.github.io`.
+3. Agregue la carpeta "build" dentro de la ubicación del directorio copiado. Por ejemplo,
+    `C: \ Usuarios \ Peter \ raytracing.github.io \ build`.
+4. Para "Dónde compilar los binarios", configúrelo en el directorio de compilación recién creado.
+5. Haga clic en "Configurar".
+6. Para "Especificar el generador para este proyecto", configúrelo en su versión de Visual Studio.
+7. Haga clic en "Listo".
+8. Haga clic en "Configurar" nuevamente.
+9. Haga clic en "Generar".
+10. En el Explorador de archivos, navegue al directorio de compilación y haga doble clic en el proyecto `.sln` recién creado.
+11. Construir en Visual Studio.
 
-If the project is succesfully cloned and built, you can then use the native terminal of your
-operating system to simply print the image to file.
+Si el proyecto se clona y construye con éxito, puede usar el terminal nativo de su
+sistema operativo para simplemente imprimir la imagen al archivo.
 
-### Running The Programs
+### Ejecutando los programas
 
-On Linux or OSX, from the terminal, run like this:
+En Linux u OSX, desde la terminal, ejecute así:
 
     $ build/inOneWeekend > image.ppm
 
-On Windows, run like this:
+En Windows, ejecute así:
 
     build\debug\inOneWeekend > image.ppm
 
-or, run the optimized version (if you've built with `--config release`):
+o ejecute la versión optimizada (si ha compilado con `--config release`):
 
     build\release\inOneWeekend > image.ppm
 
-The generated PPM file can be viewed directly as a regular computer image, if your operating system
-supports this image type. If your system doesn't handle PPM files, then you should be able to find
-PPM file viewers online. We like [ImageMagick][].
+El archivo PPM generado se puede ver directamente como una imagen de computadora normal, si su sistema operativo admite este tipo de imagen. Si su sistema no maneja archivos PPM, entonces debería poder encontrar Visores de archivos PPM en línea. Nos gusta [ImageMagick][].
 
 
-Corrections & Contributions
+Correcciones y Contribuciones
 ----------------------------
-If you spot errors, have suggested corrections, or would like to help out with the project, please
-review the [CONTRIBUTING][] document for the most effective way to proceed.
+Si detecta errores, ha sugerido correcciones o desea ayudar con el proyecto, por favor
+revise el documento [CONTRIBUTING][] para conocer la forma más efectiva de proceder.
 
 
 

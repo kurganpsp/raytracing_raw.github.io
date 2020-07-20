@@ -100,8 +100,7 @@ Puede optar por utilizar la GUI de CMake al construir en Windows.
 10. En el Explorador de archivos, navegue al directorio de compilación y haga doble clic en el proyecto `.sln` recién creado.
 11. Construir en Visual Studio.
 
-Si el proyecto se clona y construye con éxito, puede usar el terminal nativo de su
-sistema operativo para simplemente imprimir la imagen al archivo.
+Si el proyecto se clona y construye con éxito, puede usar el terminal nativo de su sistema operativo para simplemente imprimir la imagen al archivo.
 
 ### Ejecutando los programas
 

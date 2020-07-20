@@ -69,7 +69,7 @@ La rama `master` contiene el código de la última versión. Todo el desarrollo 
 Los últimos cambios se pueden encontrar en las ramas `dev-patch`,` dev-minor` y `dev-major`.
 
 
-Construyendo y corriendo
+Compilando y corriendo
 ---------------------
 Se proporcionan copias de la fuente para que pueda verificar su trabajo y compararlo. Si deseas construir
 la fuente provista, el proyecto usa CMake. En la raíz del directorio del proyecto, ejecute lo siguiente

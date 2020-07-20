@@ -57,6 +57,9 @@ The [GitHub home][] for this project contains all source and documentation assoc
 Tracing in One Weekend_ series of books. To clone or download the source code, see the green "Clone
 or download" button in the upper right of the project home page.
 
+El [GitHub home][] para este proyecto contiene toda la fuente y documentación asociada con el _Ray
+Tracing en un fin de semana_ serie de libros. Para clonar o descargar el código fuente, vea el verde "Clonar o descargar "en la esquina superior derecha de la página de inicio del proyecto.
+
 ### Programming Language
 This book is written in C++, and uses some modern features of C++11. The language and features were
 chosen to be broadly understood by the largest collection of programmers. It is not meant to

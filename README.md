@@ -6,58 +6,51 @@ Ray Tracing en un fin de semana
 |   [In One Weekend][book1]    |   [The Next Week][book2]    |   [The Rest of Your Life][book3]    |
 
 
-Getting the Books
+Conseguir los libros
 ------------------
-The _Ray Tracing in One Weekend_ series of books are now available to the public for free directly
-from the web:
+La serie de libros _Ray Tracing in One Weekend_ ahora está disponible para el público de forma gratuita directamente
+de la web:
 
   - [Ray Tracing in One Weekend][web1]
   - [Ray Tracing: The Next Week][web2]
   - [Ray Tracing: The Rest of Your Life][web3]
 
-These books have been formatted for both screen and print. For printed copies, or to create PDF
-versions, use the print function in your browser.
+Estos libros han sido formateados tanto para pantalla como para impresión. Para copias impresas o para crear PDF versiones, utilice la función de impresión en su navegador.
 
-
-News
+Noticias
 -----
-2020-May-5 — v3.1.0 is out! A smaller minor level patch to iron out a few of the larger things we
-wanted to change after a year of organization. The biggest change in the text is the separation of
-chapters into subchapters. There is no one biggest change in the source, but there are a large
-number of small and significant changes. 
+2020-May-5 - ¡Lanzada la v3.1.0! Un parche de nivel menor más pequeño para planchar algunas de las cosas más grandes que quería cambiar después de un año de organización. El mayor cambio en el texto es la separación de capítulos en subcapítulos. No hay un cambio importante en la fuente, pero hay un gran cambio. cantidad de cambios pequeños y significativos.
 
 
-Directory Structure
+Estructura de directorios
 -------------------
-The organization of this repository is meant to be simple and self-evident at a glance:
+La organización de este repositorio debe ser simple y evidente a simple vista:
 
 ### books/
-This folder contains the three raytracing books (in HTML), and some supporting material.
+Esta carpeta contiene los tres libros de trazado de rayos (en HTML) y algunos materiales de apoyo.
 
 ### images/
-Contains all of the images and figures of the books. Can also be used to compare your results.
+Contiene todas las imágenes y figuras de los libros. También se puede usar para comparar sus resultados.
 
 ### style/
-Contains the css for the books and the site.
+Contiene el CSS para los libros y el sitio.
 
 ### src/
-Contains the source.
+Contiene los codigos fuente.
 
 ### src/common/
-Contains any headers that are common to two or more books. This is also where external headers
-are stored.
+Contiene los encabezados que son comunes a dos o más libros. Aquí también es donde los encabezados externos se almacenan.
 
 ### src/<book>/
-Contains the source specific to any one book. Their is no sharing of source outside of the common
-directory.
+Contiene la fuente específica de cualquier libro. No se comparte la fuente fuera de lo común directorio.
 
 
-Source Code
+Código fuente
 -----------
 ### Intent
-This repository is not meant to act as its own tutorial. The source presented here is provided so
-you can compare your work when progressing through the book. We strongly recommend reading and
-following along with the book to understand the source.
+Este repositorio no está destinado a actuar como su propio tutorial. La fuente presentada aquí se proporciona así puedes comparar tu trabajo al avanzar en el libro. Recomendamos encarecidamente leer y
+siguiendo junto con el libro para entender la fuente.
+
 
 ### Downloading The Source Code
 The [GitHub home][] for this project contains all source and documentation associated with the _Ray

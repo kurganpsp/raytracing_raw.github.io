@@ -1,0 +1,131 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.1.0"
+					},
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3,
+						4,
+						5,
+						6,
+						7,
+						8
+					]
+				}
+			],
+			"name" : "Debug",
+			"projects" : 
+			[
+				{
+					"directoryIndexes" : 
+					[
+						0
+					],
+					"name" : "RTWeekend",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3,
+						4,
+						5,
+						6,
+						7,
+						8
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 0,
+					"id" : "cos_cubed::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-cos_cubed-Debug-fc81dd0454849a4d453e.json",
+					"name" : "cos_cubed",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "cos_density::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-cos_density-Debug-9d37d447e3a19209e586.json",
+					"name" : "cos_density",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "inOneWeekend::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-inOneWeekend-Debug-547c1d809b08079ef517.json",
+					"name" : "inOneWeekend",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "integrate_x_sq::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-integrate_x_sq-Debug-11616e7dca7a56962458.json",
+					"name" : "integrate_x_sq",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "pi::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-pi-Debug-5d1c756ec2e29bccde5e.json",
+					"name" : "pi",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "sphere_importance::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-sphere_importance-Debug-ecdd6363b913aa36369a.json",
+					"name" : "sphere_importance",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "sphere_plot::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-sphere_plot-Debug-7c8017301747876bc7f5.json",
+					"name" : "sphere_plot",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "theNextWeek::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-theNextWeek-Debug-234add0ec2b979602aa4.json",
+					"name" : "theNextWeek",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "theRestOfYourLife::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-theRestOfYourLife-Debug-2516e01ba7a743789d3f.json",
+					"name" : "theRestOfYourLife",
+					"projectIndex" : 0
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "D:/Github/raytracing.github.io/out/build/x64-Debug (default)",
+		"source" : "D:/Github/raytracing.github.io"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 0
+	}
+}

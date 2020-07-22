@@ -134,7 +134,7 @@ Normalmente, esto se realiza desde la línea de comandos utilizando el operador 
     build\Release\inOneWeekend.exe > image.ppm
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-This is how things would look on Windows. On Mac or Linux, it would look like this:
+Así es como se verían las cosas en Windows. En Mac o Linux, se vería así:
 
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     build/inOneWeekend > image.ppm
@@ -211,7 +211,7 @@ en su lugar escriba en la secuencia de salida de error (`std::cerr`):
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ C++ highlight
         std::cerr << "\nDone.\n";
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    [Listing [main-progress]: <kbd>[main.cc]</kbd> Main render loop with progress reporting]
+    [Listing [main-progress]: <kbd>[main.cc]</kbd> Bucle principal de renderizado con informes de progreso]
 </div>
 
 
@@ -219,21 +219,21 @@ en su lugar escriba en la secuencia de salida de error (`std::cerr`):
 La clase vec3
 ====================================================================================================
 
-Almost all graphics programs have some class(es) for storing geometric vectors and colors. In many
-systems these vectors are 4D (3D plus a homogeneous coordinate for geometry, and RGB plus an alpha
-transparency channel for colors). For our purposes, three coordinates suffices. We’ll use the same
-class `vec3` for colors, locations, directions, offsets, whatever. Some people don’t like this
-because it doesn’t prevent you from doing something silly, like adding a color to a location. They
-have a good point, but we’re going to always take the “less code” route when not obviously wrong.
-In spite of this, we do declare two aliases for `vec3`: `point3` and `color`. Since these two types
-are just aliases for `vec3`, you won't get warnings if you pass a `color` to a function expecting a
-`point3`, for example. We use them only to clarify intent and use.
+Casi todos los programas gráficos tienen algunas clases para almacenar vectores geométricos y colores. 
+En muchos sistemas, estos vectores son 4D (3D más una coordenada homogénea para la geometría y RGB más 
+un canal de transparencia alfa para los colores). Para nuestros propósitos, tres coordenadas son suficientes.
+Utilizaremos la misma clase `vec3` para colores, ubicaciones, direcciones, desplazamientos, lo que sea.
+A algunas personas no les gusta esto porque no te impide hacer algo tonto, como agregar un color a una
+ubicación. Tienen un buen punto, pero siempre tomaremos la ruta de "menos código" cuando obviamente no
+esté equivocado. A pesar de esto, declaramos dos alias para `vec3`: `point3` y `color`. Dado que estos 
+dos tipos son solo alias para `vec3`, no recibirá advertencias si pasa un` color` a una función que espera
+un `punto3`, por ejemplo. Los usamos solo para aclarar la intención y el uso.
 
 
 Variables y Métodos
 ----------------------
 <div class='together'>
-Here’s the top part of my `vec3` class:
+Aquí está la parte superior de mi clase `vec3`:
 
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ C++
     #ifndef VEC3_H
@@ -293,16 +293,16 @@ Here’s the top part of my `vec3` class:
 
     #endif
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    [Listing [vec3-class]: <kbd>[vec3.h]</kbd> vec3 class]
+    [Listing [vec3-class]: <kbd>[vec3.h]</kbd> vec3 clase]
 </div>
 
-We use `double` here, but some ray tracers use `float`. Either one is fine -- follow your own
-tastes.
+Aquí usamos 'double', pero algunos trazadores de rayos usan 'float'. Cualquiera de los dos está bien,
+sigue tus propios gustos.
 
 
 Funciones de utilidad vec3
 -----------------------
-The second part of the header file contains vector utility functions:
+La segunda parte del archivo de encabezado contiene funciones de utilidad de vectores:
 
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ C++
     // vec3 Utility Functions
@@ -351,13 +351,13 @@ The second part of the header file contains vector utility functions:
         return v / v.length();
     }
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    [Listing [vec3-utility]: <kbd>[vec3.h]</kbd> vec3 utility functions]
+    [Listing [vec3-utility]: <kbd>[vec3.h]</kbd> funciones de utilidad vec3]
 
 
 Funciones de utilidad de color
 ------------------------
-Using our new `vec3` class, we'll create a utility function to write a single pixel's color out to
-the standard output stream.
+Usando nuestra nueva clase `vec3`, crearemos una función de utilidad para escribir el color de un
+solo píxel en la secuencia de salida estándar.
 
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ C++
     #ifndef COLOR_H
@@ -381,7 +381,7 @@ the standard output stream.
 
 
 <div class='together'>
-Now we can change our main to use this:
+Ahora podemos cambiar nuestra funcion principal para usar esto:
 
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ C++ highlight
     #include "color.h"
@@ -433,12 +433,20 @@ different $t$ and $\mathbf{P}(t)$ moves the point along the ray. Add in negative
 can go anywhere on the 3D line. For positive $t$, you get only the parts in front of $\mathbf{A}$,
 and this is what is often called a half-line or ray.
 
+Lo único que tienen todos los trazadores de rayos es una clase de rayos y un cálculo de qué color se 
+ve a lo largo de un rayo. Pensemos en un rayo como una función $\mathbf{P}(t) = \mathbf{A} + t \mathbf{b}$. 
+aquí $\mathbf{P}$ es una posición 3D a lo largo de una línea en 3D. $\mathbf{A}$ es el origen del rayo y 
+$\mathbf{b}$ es la dirección del rayo. El parámetro de rayo $t$ es un número real (`double` en el código). 
+Conecte un $t$ diferente y $\mathbf{P}(t)$ mueve el punto a lo largo del rayo. Agregue valores negativos 
+de $t$ y podrá ir a cualquier parte de la línea 3D. Para $t$ positivo, obtienes solo las partes delante 
+de $\mathbf{A}$, y esto es lo que a menudo se llama media línea o rayo.
+
   ![Figure [lerp]: Linear interpolation](../images/fig-1.02-lerp.jpg)
 
 </div>
 
 <div class='together'>
-The function $\mathbf{P}(t)$ in more verbose code form I call `ray::at(t)`:
+La función $\mathbf{P}(t)$ en forma de código más detallado llamo `ray::at(t)`:
 
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ C++
     #ifndef RAY_H
@@ -480,9 +488,13 @@ through pixels and computes the color seen in the direction of those rays. The i
 simple camera for getting the code up and running. I also make a simple `ray_color(ray)` function
 that returns the color of the background (a simple gradient).
 
+Ahora estamos listos para doblar la esquina y hacer un rastreador de rayos. En el núcleo, el rastreador de rayos envía rayos a través de píxeles y calcula el color visto en la dirección de esos rayos. Los pasos involucrados son (1) calcular el rayo desde el ojo hasta el píxel, (2) determinar qué objetos se cruza el rayo y (3) calcular un color para ese punto de intersección. Cuando desarrollo por primera vez un rastreador de rayos, siempre hago una cámara simple para poner el código en funcionamiento. También hago una función simple `ray_color (ray)` que devuelve el color del fondo (un degradado simple).
+
 I’ve often gotten into trouble using square images for debugging because I transpose $x$ and $y$ too
 often, so I’ll use a non-square image. For now we'll use a 16:9 aspect ratio, since that's so
 common.
+
+A menudo me he metido en problemas usando imágenes cuadradas para depurar porque transpongo $ x $ y $ y $ con demasiada frecuencia, por lo que usaré una imagen no cuadrada. Por ahora usaremos una relación de aspecto de 16: 9, ya que es así común.
 
 In addition to setting up the pixel dimensions for the rendered image, we also need to set up a
 virtual viewport through which to pass our scene rays. For the standard square pixel spacing, the
@@ -491,6 +503,8 @@ units in height. We'll also set the distance between the projection plane and th
 to be one unit. This is referred to as the “focal length”, not to be confused with “focus distance”,
 which we'll present later.
 
+Además de configurar las dimensiones en píxeles de la imagen renderizada, también debemos configurar una ventana virtual para pasar los rayos de nuestra escena. Para el espaciado estándar de píxeles cuadrados, la relación de aspecto de la ventana gráfica debe ser la misma que la de nuestra imagen renderizada. Simplemente elegiremos una ventana gráfica de dos unidades de altura. También estableceremos la distancia entre el plano de proyección y el punto de proyección para que sea una unidad. Esto se conoce como la "distancia focal", que no debe confundirse con la "distancia focal", que presentaremos más adelante.
+
 I’ll put the “eye” (or camera center if you think of a camera) at $(0,0,0)$. I will have the y-axis
 go up, and the x-axis to the right. In order to respect the convention of a right handed coordinate
 system, into the screen is the negative z-axis. I will traverse the screen from the lower left hand
@@ -498,11 +512,13 @@ corner, and use two offset vectors along the screen sides to move the ray endpoi
 screen. Note that I do not make the ray direction a unit length vector because I think not doing
 that makes for simpler and slightly faster code.
 
+Pondré el "ojo" (o centro de la cámara si piensas en una cámara) en $ (0,0,0) $. Haré que el eje y suba, y el eje x a la derecha. Para respetar la convención de una coordenada diestra sistema, en la pantalla se encuentra el eje z negativo. Recorreré la pantalla desde la esquina inferior izquierda y usaré dos vectores de desplazamiento a lo largo de los lados de la pantalla para mover el punto final del rayo a través de la pantalla. Tenga en cuenta que no hago que la dirección del rayo sea un vector de longitud de unidad porque creo que no hacerlo hace que el código sea más simple y ligeramente más rápido.
+
   ![Figure [cam-geom]: Camera geometry](../images/fig-1.03-cam-geom.jpg)
 
 <div class='together'>
-Below in code, the ray `r` goes to approximately the pixel centers (I won’t worry about exactness
-for now because we’ll add antialiasing later):
+A continuación, en el código, el rayo `r` va aproximadamente a los centros de píxeles 
+(no me preocuparé por la exactitud por ahora porque agregaremos antialiasing más adelante):
 
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ C++
     #include "color.h"
@@ -563,7 +579,7 @@ for now because we’ll add antialiasing later):
         std::cerr << "\nDone.\n";
     }
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    [Listing [main-blue-white-blend]: <kbd>[main.cc]</kbd> Rendering a blue-to-white gradient]
+    [Listing [main-blue-white-blend]: <kbd>[main.cc]</kbd> Renderizar un degradado de azul a blanco]
 </div>
 
 <div class='together'>
@@ -572,13 +588,17 @@ coordinate _after_ scaling the ray direction to unit length (so $-1.0 < y < 1.0$
 looking at the $y$ height after normalizing the vector, you'll notice a horizontal gradient to the
 color in addition to the vertical gradient.
 
+La función `ray_color (ray)` combina linealmente el blanco y el azul dependiendo de la altura de $ y $ coordine _después_ escalando la dirección del rayo a la longitud de la unidad (entonces $ -1.0 <y <1.0 $). Como estamos viendo la altura $ y $ después de normalizar el vector, notará un gradiente horizontal en el color además del gradiente vertical.
+
 I then did a standard graphics trick of scaling that to $0.0 ≤ t ≤ 1.0$. When $t = 1.0$ I want blue.
 When $t = 0.0$ I want white. In between, I want a blend. This forms a “linear blend”, or “linear
 interpolation”, or “lerp” for short, between two things. A lerp is always of the form
 
+Luego hice un truco gráfico estándar de escalar eso a $ 0.0 ≤ t ≤ 1.0 $. Cuando $ t = 1.0 $ quiero azul. Cuando $ t = 0.0 $ quiero blanco. En el medio, quiero una mezcla. Esto forma una "mezcla lineal", o "interpolación lineal", o "lerp" para abreviar, entre dos cosas. Un lerp siempre tiene la forma
+
   $$ \text{blendedValue} = (1-t)\cdot\text{startValue} + t\cdot\text{endValue}, $$
 
-with $t$ going from zero to one. In our case this produces:
+con $t$ yendo de cero a uno. En nuestro caso esto produce:
 
   ![Image 2: A blue-to-white gradient depending on ray Y coordinate
   ](../images/img-1.02-blue-to-white.png class=pixel)

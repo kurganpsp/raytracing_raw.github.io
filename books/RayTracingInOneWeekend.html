@@ -7,7 +7,7 @@
                                          [Peter Shirley][]
                       editado por [Steve Hollasch][] y [Trevor David Black][]
                                                 <br>
-                                     Version 3.2.0, 2020-07-18
+                                    Versión 3.2.0, 2020-07-18
                                                 <br>
             Derechos de autor 2018-2020 Peter Shirley. Todos los derechos reservados.
 
@@ -23,9 +23,14 @@ full-featured ray tracer, but it does have the indirect lighting which has made 
 in movies. Follow these steps, and the architecture of the ray tracer you produce will be good for
 extending to a more extensive ray tracer if you get excited and want to pursue that.
 
+He enseñado muchas clases de gráficos a lo largo de los años. A menudo los hago en el trazado de rayos, porque se ve obligado a escribir todo el código, pero aún puede obtener imágenes interesantes sin API. Decidí adaptar mis notas del curso en un tutorial, para llevarlo a un programa genial lo más rápido posible. No será un rastreador de rayos con todas las funciones, pero tiene la iluminación indirecta que ha hecho que el trazado de rayos sea un elemento básico en las películas. Siga estos pasos, y la arquitectura del rastreador de rayos que produzca será buena para
+extendiéndose a un rastreador de rayos más extenso si te emociona y quieres seguir con eso.
+
 When somebody says “ray tracing” it could mean many things. What I am going to describe is
 technically a path tracer, and a fairly general one. While the code will be pretty simple (let the
 computer do the work!) I think you’ll be very happy with the images you can make.
+
+Cuando alguien dice "trazado de rayos" podría significar muchas cosas. Lo que voy a describir es técnicamente un trazado de ruta y bastante general. Si bien el código será bastante simple (¡deja que la computadora haga el trabajo!) Creo que estarás muy contento con las imágenes que puedes hacer.
 
 I’ll take you through writing a ray tracer in the order I do it, along with some debugging tips. By
 the end, you will have a ray tracer that produces some great images. You should be able to do this
@@ -37,9 +42,15 @@ code online, but the code is real and I show all of it except for a few straight
 the `vec3` class. I am a big believer in typing in code to learn it, but when code is available I
 use it, so I only practice what I preach when the code is not available. So don’t ask!
 
+Te llevaré a través de la escritura de un rastreador de rayos en el orden en que lo hago, junto con algunos consejos de depuración. Al final, tendrá un rastreador de rayos que produce algunas imágenes excelentes. Deberías poder hacer esto
+en un fin de semana Si tardas más, no te preocupes por eso. Uso C ++ como lenguaje de conducción, pero no es necesario. Sin embargo, le sugiero que lo haga, porque es rápido, portátil y la mayoría de las películas de producción y
+Los renderizadores de videojuegos están escritos en C ++. Tenga en cuenta que evito la mayoría de las "características modernas" de C ++, pero la herencia y la sobrecarga del operador son demasiado útiles para que los trazadores de rayos pasen. No proporciono el código en línea, pero el código es real y lo muestro a excepción de algunos operadores directos en la clase `vec3`. Creo firmemente en escribir código para aprenderlo, pero cuando el código está disponible, lo uso, así que solo practico lo que predico cuando el código no está disponible. ¡Así que no preguntes!
+
 I have left that last part in because it is funny what a 180 I have done. Several readers ended up
 with subtle errors that were helped when we compared code. So please do type in the code, but if you
 want to look at mine it is at:
+
+He dejado esa última parte porque es gracioso lo que he hecho. Varios lectores terminaron con errores sutiles que fueron ayudados cuando comparamos el código. Por lo tanto, escriba el código, pero si desea ver el mío, es en:
 
 https://github.com/RayTracing/raytracing.github.io/
 
@@ -47,16 +58,24 @@ I assume a little bit of familiarity with vectors (like dot product and vector a
 don’t know that, do a little review. If you need that review, or to learn it for the first time,
 check out Marschner’s and my graphics text, Foley, Van Dam, _et al._, or McGuire’s graphics codex.
 
+Asumo un poco de familiaridad con los vectores (como el producto de punto y la adición de vectores). Si no lo sabes, haz una pequeña reseña. Si necesita esa revisión, o para aprenderla por primera vez, consulte el texto gráfico de Marschner y mis gráficos, Foley, Van Dam, _et al._ o el códice gráfico de McGuire.
+
 If you run into trouble, or do something cool you’d like to show somebody, send me some email at
 ptrshrl@gmail.com.
+
+Si tiene problemas o hace algo genial que le gustaría mostrar a alguien, envíeme un correo electrónico a ptrshrl@gmail.com.
 
 I’ll be maintaining a site related to the book including further reading and links to resources at a
 blog https://in1weekend.blogspot.com/ related to this book.
 
+Mantendré un sitio relacionado con el libro que incluye lecturas adicionales y enlaces a recursos en un blog https://in1weekend.blogspot.com/ relacionado con este libro.
+
 Thanks to everyone who lent a hand on this project. You can find them in the acknowledgments section
 at the end of this book.
 
-Let’s get on with it!
+Gracias a todos los que ayudaron en este proyecto. Puede encontrarlos en la sección de agradecimientos al final de este libro.
+
+¡Sigamos con eso!
 
 
 

@@ -70,7 +70,7 @@ Gracias a todos los que ayudaron en este proyecto. Puede encontrarlos en la secc
 Producir una imagen 
 ====================================================================================================
 
-The PPM Image Format
+El formato de imagen PPM
 ---------------------
 Whenever you start a renderer, you need a way to see an image. The most straightforward way is to
 write it to a file. The catch is, there are so many formats. Many of those are complex. I always
@@ -220,7 +220,7 @@ instead write to the error output stream (`std::cerr`):
 
 
 
-The vec3 Class
+La clase vec3
 ====================================================================================================
 
 Almost all graphics programs have some class(es) for storing geometric vectors and colors. In many
@@ -234,7 +234,7 @@ are just aliases for `vec3`, you won't get warnings if you pass a `color` to a f
 `point3`, for example. We use them only to clarify intent and use.
 
 
-Variables and Methods
+Variables y Métodos
 ----------------------
 <div class='together'>
 Here’s the top part of my `vec3` class:
@@ -423,7 +423,7 @@ Now we can change our main to use this:
 
 
 
-Rays, a Simple Camera, and Background
+Rayos, una cámara simple y fondo
 ====================================================================================================
 
 The ray Class
@@ -591,7 +591,7 @@ with $t$ going from zero to one. In our case this produces:
 
 
 
-Adding a Sphere
+Agregar una esfera
 ====================================================================================================
 
 Let’s add a single object to our ray tracer. People often use spheres in ray tracers because
@@ -711,7 +711,7 @@ you. This is not a feature! We’ll fix those issues next.
 
 
 
-Surface Normals and Multiple Objects
+Normales de superficie y objetos múltiples
 ====================================================================================================
 
 
@@ -1516,7 +1516,7 @@ Zooming into the image that is produced, we can see the difference in edge pixel
 
 
 
-Diffuse Materials
+Materiales difusos
 ====================================================================================================
 
 Now that we have objects and multiple rays per pixel, we can make some realistic looking materials.
@@ -1912,7 +1912,7 @@ effect of different diffuse methods on the lighting of the scene.
 
 
 
-Metal
+Metales
 ====================================================================================================
 
 An Abstract Class for Materials
@@ -2310,7 +2310,7 @@ We can try that out by adding fuzziness 0.3 and 1.0 to the metals:
 
 
 
-Dielectrics
+Dieléctricos
 ====================================================================================================
 
 Clear materials such as water, glass, and diamonds are dielectrics. When a light ray hits them, it
@@ -2652,7 +2652,7 @@ This gives:
 
 
 
-Positionable Camera
+Cámara posicionable
 ====================================================================================================
 
 Cameras, like dielectrics, are a pain to debug. So I always develop mine incrementally. First, let’s
@@ -2866,7 +2866,7 @@ to get:
 
 
 
-Defocus Blur
+Desenfoque desenfocado
 ====================================================================================================
 
 Now our final feature: defocus blur. Note, all photographers will call it “depth of field” so be
@@ -3016,7 +3016,7 @@ We get:
 
 
 
-Where Next?
+¿Dónde sigue?
 ====================================================================================================
 
 A Final Render
@@ -3168,7 +3168,7 @@ Have fun, and please send me your cool images!
                                (insert acknowledgments.md.html here)
 
 
-Citing This Book
+Citando este libro
 ====================================================================================================
 Consistent citations make it easier to identify the source, location and versions of this work. If
 you are citing this book, we ask that you try to use one of the following forms if possible.

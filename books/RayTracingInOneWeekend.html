@@ -616,7 +616,9 @@ R^2$. Put another way, if a given point $(x,y,z)$ is on the sphere, then $x^2 + 
 the given point $(x,y,z)$ is _inside_ the sphere, then $x^2 + y^2 + z^2 < R^2$, and if a given point
 $(x,y,z)$ is _outside_ the sphere, then $x^2 + y^2 + z^2 > R^2$.
 
-It gets uglier if the sphere center is at $(C_x, C_y, C_z)$:
+Recuerde que la ecuación para una esfera centrada en el origen del radio $ R $ es $ x ^ 2 + y ^ 2 + z ^ 2 = R ^ 2 $. Dicho de otra manera, si un punto dado $ (x, y, z) $ está en la esfera, entonces $ x ^ 2 + y ^ 2 + z ^ 2 = R ^ 2 $. Si el punto dado $ (x, y, z) $ está dentro de la esfera, luego $ x ^ 2 + y ^ 2 + z ^ 2 <R ^ 2 $, y si un punto dado $ (x, y, z) $ está _ afuera_ de la esfera, entonces $ x ^ 2 + y ^ 2 + z ^ 2> R ^ 2 $.
+
+Se pone más feo si el centro de la esfera está en $(C_x, C_y, C_z)$:
 
   $$ (x - C_x)^2 + (y - C_y)^2 + (z - C_z)^2 = r^2 $$
 </div>
@@ -627,13 +629,15 @@ is under the hood in the `vec3` class. You might note that the vector from cente
 $\mathbf{C} = (C_x,C_y,C_z)$ to point $\mathbf{P} = (x,y,z)$ is $(\mathbf{P} - \mathbf{C})$, and
 therefore
 
+En gráficos, casi siempre quieres que tus fórmulas estén en términos de vectores, por lo que todo el material x / y / z está bajo el capó en la clase `vec3`. Puede observar que el vector del centro $ \ mathbf {C} = (C_x, C_y, C_z) $ para señalar $ \ mathbf {P} = (x, y, z) $ es $ (\ mathbf {P} - \ mathbf {C}) $, y por lo tanto
+
   $$ (\mathbf{P} - \mathbf{C}) \cdot (\mathbf{P} - \mathbf{C})
      = (x - C_x)^2 + (y - C_y)^2 + (z - C_z)^2
   $$
 </div>
 
 <div class='together'>
-So the equation of the sphere in vector form is:
+Entonces la ecuación de la esfera en forma vectorial es:
 
   $$ (\mathbf{P} - \mathbf{C}) \cdot (\mathbf{P} - \mathbf{C}) = r^2 $$
 </div>
@@ -644,17 +648,22 @@ to know if our ray $\mathbf{P}(t) = \mathbf{A} + t\mathbf{b}$ ever hits the sphe
 does hit the sphere, there is some $t$ for which $\mathbf{P}(t)$ satisfies the sphere equation. So
 we are looking for any $t$ where this is true:
 
+Podemos leer esto como "cualquier punto $\mathbf{P}$ que satisfaga esta ecuación está en la esfera".
+Queremos saber si nuestro rayo $\mathbf{P}(t) = \mathbf{A} + t\mathbf{b}$ alguna vez golpea la esfera
+en cualquier lugar. Si golpea la esfera, hay algunos $t$ para los cuales $\mathbf{P}(t)$ satisface la
+ecuación de la esfera. Entonces estamos buscando cualquier $t$ donde esto sea cierto:
+
   $$ (\mathbf{P}(t) - \mathbf{C}) \cdot (\mathbf{P}(t) - \mathbf{C}) = r^2 $$
 
-or expanding the full form of the ray $\mathbf{P}(t)$:
+o expandir la forma completa del rayo $\mathbf{P}(t)$:
 
   $$ (\mathbf{A} + t \mathbf{b} - \mathbf{C})
       \cdot (\mathbf{A} + t \mathbf{b} - \mathbf{C}) = r^2 $$
 </div>
 
 <div class='together'>
-The rules of vector algebra are all that we would want here. If we expand that equation and move all
-the terms to the left hand side we get:
+Las reglas del álgebra vectorial son todo lo que quisiéramos aquí. Si expandimos esa ecuación y movemos todo
+los términos del lado izquierdo obtenemos:
 
   $$ t^2 \mathbf{b} \cdot \mathbf{b}
      + 2t \mathbf{b} \cdot (\mathbf{A}-\mathbf{C})
@@ -669,6 +678,12 @@ and there is a square root part that is either positive (meaning two real soluti
 (meaning no real solutions), or zero (meaning one real solution). In graphics, the algebra almost
 always relates very directly to the geometry. What we have is:
 
+Los vectores y $r$ en esa ecuación son todos constantes y conocidos. Lo desconocido es $t$, y la
+ecuación es cuadrática, como probablemente viste en tu clase de matemáticas de secundaria. Puede resolver por $t$
+y hay una parte de raíz cuadrada que es positiva (que significa dos soluciones reales), negativa
+(que significa que no hay soluciones reales) o cero (que significa una solución real). En gráficos, el álgebra casi
+siempre se relaciona muy directamente con la geometría. Lo que tenemos es:
+
   ![Figure [ray-sphere]: Ray-sphere intersection results](../images/fig-1.04-ray-sphere.jpg)
 
 </div>
@@ -679,6 +694,9 @@ Crear nuestra primera imagen con trazado de rayos
 <div class='together'>
 If we take that math and hard-code it into our program, we can test it by coloring red any pixel
 that hits a small sphere we place at -1 on the z-axis:
+
+Si tomamos esa matemática y la codificamos en nuestro programa, podemos probarla coloreando de rojo cualquier píxel
+que golpee una pequeña esfera que colocamos en -1 en el eje z:
 
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ C++ highlight
     bool hit_sphere(const point3& center, double radius, const ray& r) {
@@ -707,9 +725,9 @@ that hits a small sphere we place at -1 on the z-axis:
 </div>
 
 <div class='together'>
-What we get is this:
+Lo que obtenemos es esto:
 
-  ![Image 3: A simple red sphere](../images/img-1.03-red-sphere.png class=pixel)
+  ![Image 3: Una simple esfera roja](../images/img-1.03-red-sphere.png class=pixel)
 
 </div>
 
@@ -718,6 +736,12 @@ but we are closer to halfway done than we are to our start! One thing to be awar
 tested whether the ray hits the sphere at all, but $t < 0$ solutions work fine. If you change your
 sphere center to $z = +1$ you will get exactly the same picture because you see the things behind
 you. This is not a feature! We’ll fix those issues next.
+
+Ahora esto carece de todo tipo de cosas, como sombreado y rayos de reflexión y más de un objeto,
+¡pero estamos más cerca de la mitad del camino que de nuestro comienzo! Una cosa a tener en cuenta
+es que probamos si el rayo golpea la esfera, pero las soluciones $t < 0$ funcionan bien. Si cambia
+el centro de su esfera a $z = +1$, obtendrá exactamente la misma imagen porque verá las cosas 
+detrás de usted. ¡Esto no es una característica! A continuación solucionaremos esos problemas.
 
 
 

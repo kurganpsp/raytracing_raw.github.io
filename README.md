@@ -126,16 +126,16 @@ revise el documento [CONTRIBUTING][] para conocer la forma más efectiva de proc
 
 
 
-[book1]:                    books/RayTracingInOneWeekend.html
-[book2]:                    books/RayTracingTheNextWeek.html
-[book3]:                    books/RayTracingTheRestOfYourLife.html
-[CONTRIBUTING]:             ./CONTRIBUTING.md
-[cover1]:                   images/RTOneWeekend-small.jpg
-[cover2]:                   images/RTNextWeek-small.jpg
-[cover3]:                   images/RTRestOfYourLife-small.jpg
-[GitHub home]:              https://github.com/kurganpsp/raytracing_raw.github.io
-[ImageMagick]:              https://imagemagick.org/
-[web1]:                     https://raytracing.github.io/books/RayTracingInOneWeekend.html
-[web2]:                     https://raytracing.github.io/books/RayTracingTheNextWeek.html
-[web3]:                     https://raytracing.github.io/books/RayTracingTheRestOfYourLife.html
-[implementations]:          https://github.com/RayTracing/raytracing.github.io/wiki/Implementations-in-Other-Languages
+[book1]:            books/RayTracingInOneWeekend.html
+[book2]:            books/RayTracingTheNextWeek.html
+[book3]:            books/RayTracingTheRestOfYourLife.html
+[CONTRIBUTING]:     ./CONTRIBUTING.md
+[cover1]:           images/RTOneWeekend-small.jpg
+[cover2]:           images/RTNextWeek-small.jpg
+[cover3]:           images/RTRestOfYourLife-small.jpg
+[GitHub home]:      https://github.com/kurganpsp/raytracing_raw.github.io
+[ImageMagick]:      https://imagemagick.org/
+[web1]:             https://raytracing.github.io/books/RayTracingInOneWeekend.html
+[web2]:             https://raytracing.github.io/books/RayTracingTheNextWeek.html
+[web3]:             https://raytracing.github.io/books/RayTracingTheRestOfYourLife.html
+[implementations]:  https://github.com/RayTracing/raytracing.github.io/wiki/Implementations-in-Other-Languages

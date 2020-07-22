@@ -758,6 +758,8 @@ yes, but I won’t enforce that in the code. This could allow subtle bugs, so be
 personal preference as are most design decisions like that. For a sphere, the outward normal is in
 the direction of the hit point minus the center:
 
+Primero, obtengamos una superficie normal para que podamos sombrear. Este es un vector que es perpendicular a la superficie en el punto de intersección. Hay dos decisiones de diseño para hacer las normales. La primera es si estas normales son de longitud unitaria. Eso es conveniente para sombrear, por lo que diré que sí, pero no haré cumplir eso en el código. Esto podría permitir errores sutiles, así que tenga en cuenta que esta es una preferencia personal, como lo son la mayoría de las decisiones de diseño como esa. Para una esfera, la normal exterior está en la dirección del punto de golpe menos el centro:
+
   ![Figure [sphere-normal]: Sphere surface-normal geometry](../images/fig-1.05-sphere-normal.jpg)
 
 <div class='together'>
@@ -769,6 +771,8 @@ component is between -1 and 1) is to map each component to the interval from 0 t
 x/y/z to r/g/b. For the normal, we need the hit point, not just whether we hit or not. Let’s assume
 the closest hit point (smallest $t$). These changes in the code let us compute and visualize
 $\mathbf{n}$:
+
+En la Tierra, esto implica que el vector desde el centro de la Tierra hacia usted apunta hacia arriba. Agreguemos eso al código ahora y sombreémoslo. Todavía no tenemos luces ni nada, así que visualicemos las normales con un mapa de colores. Un truco común utilizado para visualizar normales (porque es fácil y algo intuitivo suponer que $ \ mathbf {n} $ es un vector de longitud de unidad, por lo que cada componente está entre -1 y 1) es asignar cada componente al intervalo desde 0 a 1, y luego asigna x / y / z a r / g / b. Para lo normal, necesitamos el punto de golpe, no solo si golpeamos o no. Supongamos el punto de golpe más cercano (el más pequeño $ t $). Estos cambios en el código nos permiten calcular y visualizar $ \ mathbf {n} $:
 
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ C++ highlight
     double hit_sphere(const point3& center, double radius, const ray& r) {
@@ -803,13 +807,13 @@ $\mathbf{n}$:
         return (1.0-t)*color(1.0, 1.0, 1.0) + t*color(0.5, 0.7, 1.0);
     }
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    [Listing [render-surface-normal]: <kbd>[main.cc]</kbd> Rendering surface normals on a sphere]
+    [Listing [render-surface-normal]: <kbd>[main.cc]</kbd> Representación de normales de superficie en una esfera]
 </div>
 
 <div class='together'>
-And that yields this picture:
+Y eso produce esta imagen:
 
-  ![Image 4: A sphere colored according to its normal vectors
+  ![Image 4: Una esfera coloreada según sus vectores normales.
   ](../images/img-1.04-normals-sphere.png class=pixel)
 
 </div>
@@ -817,7 +821,7 @@ And that yields this picture:
 
 Simplificando el codigo de la Intersección Rayo-esfera 
 ---------------------------------------------
-Let’s revisit the ray-sphere equation:
+Volvamos a la ecuación de la esfera de rayos:
 
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ C++
     double hit_sphere(const point3& center, double radius, const ray& r) {
@@ -834,12 +838,17 @@ Let’s revisit the ray-sphere equation:
         }
     }
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    [Listing [ray-sphere-before]: <kbd>[main.cc]</kbd> Ray-sphere intersection code (before)]
+    [Listing [ray-sphere-before]: <kbd>[main.cc]</kbd> Código de intersección de la esfera de rayos (antes)]
 
 First, recall that a vector dotted with itself is equal to the squared length of that vector.
 
+Primero, recuerde que un vector punteado consigo mismo es igual a la longitud al cuadrado de ese vector.
+
 Second, notice how the equation for `b` has a factor of two in it. Consider what happens to the
 quadratic equation if $b = 2h$:
+
+Segundo, observe cómo la ecuación para 'b' tiene un factor de dos. Considera lo que le sucede al
+ecuación cuadrática si $ b = 2h $:
 
   $$ \frac{-b \pm \sqrt{b^2 - 4ac}}{2a} $$
 
@@ -849,7 +858,7 @@ quadratic equation if $b = 2h$:
 
   $$ = \frac{-h \pm \sqrt{h^2 - ac}}{a} $$
 
-Using these observations, we can now simplify the sphere-intersection code to this:
+Usando estas observaciones, ahora podemos simplificar el código de intersección de esfera a esto:
 
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ C++
     double hit_sphere(const point3& center, double radius, const ray& r) {
@@ -870,7 +879,7 @@ Using these observations, we can now simplify the sphere-intersection code to th
         }
     }
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    [Listing [ray-sphere-after]: <kbd>[main.cc]</kbd> Ray-sphere intersection code (after)]
+    [Listing [ray-sphere-after]: <kbd>[main.cc]</kbd> Código de intersección de esfera de rayos (después)]
 
 
 Una abstracción para objetos golpeables
@@ -882,6 +891,8 @@ quandary -- calling it an “object” would be good if not for “object orient
 is often used, with the weakness being maybe we will want volumes. “hittable” emphasizes the member
 function that unites them. I don’t love any of these, but I will go with “hittable”.
 
+Ahora, ¿qué tal varias esferas? Si bien es tentador tener una variedad de esferas, una muy limpia la solución es hacer una "clase abstracta" para cualquier cosa que un rayo pueda golpear, y hacer una esfera y un lista de esferas simplemente algo que puedes golpear. Lo que debería llamarse esa clase es una especie de dilema: llamarlo un "objeto" sería bueno si no fuera por la programación "orientada a objetos". "Superficie" se usa a menudo, con la debilidad de que tal vez queramos volúmenes. "Hittable" enfatiza el miembro función que los une. No amo ninguno de estos, pero elegiré "hittable".
+
 <div class='together'>
 This `hittable` abstract class will have a hit function that takes in a ray. Most ray tracers have
 found it convenient to add a valid interval for hits $t_{min}$ to $t_{max}$, so the hit only
@@ -891,6 +902,8 @@ is whether to do things like compute the normal if we hit something. We might en
 something closer as we do our search, and we will only need the normal of the closest thing. I will
 go with the simple solution and compute a bundle of stuff I will store in some structure. Here’s
 the abstract class:
+
+Esta clase abstracta `hittable` tendrá una función hit que capta un rayo. La mayoría de los trazadores de rayos han encontrado conveniente agregar un intervalo válido para los golpes $ t_ {min} $ a $ t_ {max} $, por lo que el golpe solo "cuenta" si $ t_ {min} <t <t_ {max} $. Para los rayos iniciales esto es positivo $ t $, pero como veremos, puede ayudar algunos detalles en el código para tener un intervalo $ t_ {min} $ a $ t_ {max} $. Una pregunta de diseño es si hacer cosas como calcular lo normal si golpeamos algo. Podríamos terminar golpeando algo más cerca mientras hacemos nuestra búsqueda, y solo necesitaremos lo normal de lo más cercano. Iré con la solución simple y calcularé un paquete de cosas que almacenaré en alguna estructura. Aqui esta la clase abstracta:
 
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ C++
     #ifndef HITTABLE_H
@@ -915,7 +928,7 @@ the abstract class:
 </div>
 
 <div class='together'>
-And here’s the sphere:
+Y aquí está la esfera:
 
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ C++
     #ifndef SPHERE_H
@@ -986,6 +999,8 @@ the ray. Alternatively, we can have the normal always point against the ray. If 
 the sphere, the normal will point outward, but if the ray is inside the sphere, the normal will
 point inward.
 
+La segunda decisión de diseño para las normales es si siempre deben señalar. En la actualidad, el lo normal encontrado siempre estará en la dirección del centro al punto de intersección (lo normal Señala). Si el rayo se cruza con la esfera desde el exterior, los puntos normales contra el rayo. Si el rayo se cruza con la esfera desde adentro, lo normal (que siempre señala) apunta con el rayo. Alternativamente, podemos tener el punto normal siempre en contra del rayo. Si el rayo está fuera de la esfera, lo normal apuntará hacia afuera, pero si el rayo está dentro de la esfera, lo normal apuntará hacia adentro.
+
   ![Figure [normal-sides]: Possible directions for sphere surface-normal geometry
   ](../images/fig-1.06-normal-sides.jpg)
 
@@ -996,6 +1011,8 @@ side of the surface that the ray is coming from. This is important for objects t
 differently on each side, like the text on a two-sided sheet of paper, or for objects that have an
 inside and an outside, like glass balls.
 
+Necesitamos elegir una de estas posibilidades porque eventualmente queremos determinar de qué lado de la superficie proviene el rayo. Esto es importante para los objetos que se representan de manera diferente en cada lado, como el texto en una hoja de papel de dos lados, o para los objetos que tienen un interior y un exterior, como bolas de cristal.
+
 If we decide to have the normals always point out, then we will need to determine which side the
 ray is on when we color it. We can figure this out by comparing the ray with the normal. If the ray
 and the normal face in the same direction, the ray is inside the object, if the ray and the normal
@@ -1003,6 +1020,7 @@ face in the opposite direction, then the ray is outside the object. This can be 
 taking the dot product of the two vectors, where if their dot is positive, the ray is inside the
 sphere.
 
+Si decidimos que las normales siempre señalen, entonces tendremos que determinar de qué lado está el rayo cuando lo coloreamos. Podemos resolver esto comparando el rayo con lo normal. Si el rayo y la cara normal en la misma dirección, el rayo está dentro del objeto, si el rayo y la cara normal en la dirección opuesta, entonces el rayo está fuera del objeto. Esto puede determinarse tomando el producto escalar de los dos vectores, donde si su punto es positivo, el rayo está dentro de la esfera.
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ C++
     if (dot(ray_direction, outward_normal) > 0.0) {
         // ray is inside the sphere
@@ -1018,6 +1036,8 @@ sphere.
 If we decide to have the normals always point against the ray, we won't be able to use the dot
 product to determine which side of the surface the ray is on. Instead, we would need to store that
 information:
+
+Si decidimos que las normales siempre apunten contra el rayo, no podremos usar el punto producto para determinar en qué lado de la superficie está el rayo. En cambio, necesitaríamos almacenar eso información:
 
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ C++
     bool front_face;
@@ -1040,8 +1060,12 @@ more material types than we have geometry types, so we'll go for less work and p
 at geometry time. This is simply a matter of preference, and you'll see both implementations in the
 literature.
 
+Podemos configurar las cosas para que las normales siempre apunten "hacia afuera" desde la superficie, o siempre apunten contra el rayo incidente. Esta decisión está determinada por si desea determinar el lado de la superficie al momento de la intersección de la geometría o al momento de colorear. En este libro nosotros tenemos más tipos de materiales de los que tenemos tipos de geometría, por lo que iremos por menos trabajo y pondremos la determinación en el momento de la geometría. Esto es simplemente una cuestión de preferencia, y verá ambas implementaciones en la literatura.
+
 We add the `front_face` bool to the `hit_record` struct. We'll also add a function to solve this
 calculation for us.
+
+Agregamos el bool `front_face` a la estructura` hit_record`. También agregaremos una función para resolver este cálculo por nosotros.
 
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ C++
     struct hit_record {
@@ -1062,6 +1086,7 @@ calculation for us.
 
 <div class='together'>
 And then we add the surface side determination to the class:
+Y luego agregamos la determinación del lado de la superficie a la clase:
 
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ C++
     bool sphere::hit(const ray& r, double t_min, double t_max, hit_record& rec) const {
@@ -1105,8 +1130,8 @@ And then we add the surface side determination to the class:
 Una lista de objetos golpeables
 ---------------------------
 <div class='together'>
-We have a generic object called a `hittable` that the ray can intersect with. We now add a class
-that stores a list of `hittable`s:
+Tenemos un objeto genérico llamado "hittable" con el que el rayo puede cruzarse. Ahora agregamos 
+una clase que almacena una lista de `hittable`s:
 
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ C++
     #ifndef HITTABLE_LIST_H
@@ -1162,13 +1187,18 @@ Algunas nuevas características de C ++
 The `hittable_list` class code uses two C++ features that may trip you up if you're not normally a
 C++ programmer: `vector` and `shared_ptr`.
 
+El código de clase `hittable_list` usa dos características de C ++ que pueden hacer que te tropieces si normalmente no eres un programador de C ++:` vector` y `shared_ptr`.
+
 `shared_ptr<type>` is a pointer to some allocated type, with reference-counting semantics.
 Every time you assign its value to another shared pointer (usually with a simple assignment), the
 reference count is incremented. As shared pointers go out of scope (like at the end of a block or
 function), the reference count is decremented. Once the count goes to zero, the object is deleted.
 
+`shared_ptr <type>` es un puntero a algún tipo asignado, con semántica de conteo de referencias. Cada vez que asigna su valor a otro puntero compartido (generalmente con una asignación simple), el    El recuento de referencia se incrementa. A medida que los punteros compartidos salen del alcance (como al final de un bloque o     función), el recuento de referencia se reduce. Una vez que el recuento llega a cero, el objeto se elimina.
+
 <div class='together'>
 Typically, a shared pointer is first initialized with a newly-allocated object, something like this:
+Normalmente, un puntero compartido se inicializa primero con un objeto recién asignado, algo como esto:
 
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ C++
     shared_ptr<double> double_ptr = make_shared<double>(0.37);
@@ -1180,8 +1210,12 @@ Typically, a shared pointer is first initialized with a newly-allocated object, 
 `make_shared<thing>(thing_constructor_params ...)` allocates a new instance of type `thing`, using
 the constructor parameters. It returns a `shared_ptr<thing>`.
 
+`make_shared <thing> (thing_constructor_params ...)` asigna una nueva instancia de tipo `thing`, utilizando los parámetros del constructor. Devuelve un `shared_ptr <thing>`.
+
 Since the type can be automatically deduced by the return type of `make_shared<type>(...)`, the
 above lines can be more simply expressed using C++'s `auto` type specifier:
+
+Dado que el tipo puede deducirse automáticamente mediante el tipo de retorno de `make_shared <type> (...)`, las líneas anteriores se pueden expresar más simplemente usando el especificador de tipo `auto` de C ++:
 
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ C++
     auto double_ptr = make_shared<double>(0.37);
@@ -1196,18 +1230,25 @@ We'll use shared pointers in our code, because it allows multiple geometries to 
 instance (for example, a bunch of spheres that all use the same texture map material), and because
 it makes memory management automatic and easier to reason about.
 
-`std::shared_ptr` is included with the `<memory>` header.
+Usaremos punteros compartidos en nuestro código, porque permite que múltiples geometrías compartan un común ejemplo (por ejemplo, un montón de esferas que usan el mismo material de mapa de textura), y porque hace que la administración de memoria sea automática y más fácil de razonar.
+
+`std::shared_ptr` se incluye con el encabezado` <memory> `.
 
 The second C++ feature you may be unfamiliar with is `std::vector`. This is a generic array-like
 collection of an arbitrary type. Above, we use a collection of pointers to `hittable`. `std::vector`
 automatically grows as more values are added: `objects.push_back(object)` adds a value to the end of
 the `std::vector` member variable `objects`.
 
+La segunda característica de C ++ con la que puede no estar familiarizado es `std :: vector`. Esta es una matriz genérica colección de un tipo arbitrario. Arriba, utilizamos una colección de punteros a "hittable". `std :: vector` crece automáticamente a medida que se agregan más valores: `objects.push_back (object)` agrega un valor al final de la variable de miembro `std :: vector`` objects`.
+
 `std::vector` is included with the `<vector>` header.
+`std::vector` se incluye con el encabezado` <vector> `.
 
 Finally, the `using` statements in listing [hittable-list-initial] tell the compiler that we'll be
 getting `shared_ptr` and `make_shared` from the `std` library, so we don't need to prefex these with
 `std::` every time we reference them.
+
+Finalmente, las declaraciones `using` en el listado [hittable-list-initial] le dicen al compilador que obtendremos` shared_ptr` y `make_shared` de la biblioteca` std`, por lo que no necesitamos prefexingarlas con `std ::` cada vez que los hacemos referencia.
 
 
 Constantes comunes y funciones de utilidad
@@ -1218,6 +1259,8 @@ need infinity, but we will also throw our own definition of pi in there, which w
 There is no standard portable definition of pi, so we just define our own constant for it. We'll
 throw common useful constants and future utility functions in `rtweekend.h`, our general main header
 file.
+
+Necesitamos algunas constantes matemáticas que definimos convenientemente en su propio archivo de encabezado. Por ahora solo nosotros necesitamos infinito, pero también arrojaremos nuestra propia definición de pi, que necesitaremos más adelante. No existe una definición portátil estándar de pi, por lo que solo definimos nuestra propia constante para ella. Lanzaremos constantes útiles comunes y futuras funciones de utilidad en `rtweekend.h`, nuestro archivo de encabezado principal general.
 
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ C++
     #ifndef RTWEEKEND_H
@@ -1257,7 +1300,7 @@ file.
 </div>
 
 <div class='together'>
-And the new main:
+Y la nueva funcion principal:
 
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ C++ highlight
     #include "rtweekend.h"
@@ -1337,6 +1380,8 @@ And the new main:
 <div class='together'>
 This yields a picture that is really just a visualization of where the spheres are along with their
 surface normal. This is often a great way to look at your model for flaws and characteristics.
+
+Esto produce una imagen que en realidad es solo una visualización de dónde están las esferas junto con su superficie normal Esta es a menudo una excelente manera de ver su modelo en busca de fallas y características.
 
   ![Image 5: Resulting render of normals-colored sphere with ground
   ](../images/img-1.05-normals-sphere-ground.png class=pixel)

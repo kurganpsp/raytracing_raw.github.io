@@ -72,14 +72,15 @@ Producir una imagen
 
 El formato de imagen PPM
 ---------------------
-Whenever you start a renderer, you need a way to see an image. The most straightforward way is to
-write it to a file. The catch is, there are so many formats. Many of those are complex. I always
-start with a plain text ppm file. Here’s a nice description from Wikipedia:
+Cada vez que inicia un renderizador, necesita una forma de ver una imagen. La forma más directa es
+escribirlo en un archivo. El problema es que hay muchos formatos. Muchos de esos son complejos. Yo
+siempre comienzo con un archivo de texto sin formato en ppm. Aquí hay una buena descripción
+de Wikipedia:
 
   ![Figure [ppm]: PPM Example](../images/fig-1.01-ppm.jpg)
 
 <div class='together'>
-Let’s make some C++ code to output such a thing:
+Hagamos un código C++ para generar algo así:
 
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ C++
     #include <iostream>
@@ -110,29 +111,28 @@ Let’s make some C++ code to output such a thing:
         }
     }
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    [Listing [main-initial]: <kbd>[main.cc]</kbd> Creating your first image]
+    [Listing [main-initial]: <kbd>[main.cc]</kbd> Creando tu primera imagen]
 </div>
 
-There are some things to note in that code:
+Hay algunas cosas a tener en cuenta en ese código:
 
-  1. The pixels are written out in rows with pixels left to right.
+  1. Los píxeles se escriben en filas con píxeles de izquierda a derecha.
 
-  2. The rows are written out from top to bottom.
+  2. Las filas se escriben de arriba a abajo.
 
-  3. By convention, each of the red/green/blue components range from 0.0 to 1.0. We will relax that
-     later when we internally use high dynamic range, but before output we will tone map to the zero
-     to one range, so this code won’t change.
-
-  4. Red goes from fully off (black) to fully on (bright red) from left to right, and green goes
-     from black at the bottom to fully on at the top. Red and green together make yellow so we
-     should expect the upper right corner to be yellow.
-
+  3. Por convención, cada uno de los componentes rojo/verde/azul varía de 0.0 a 1.0. Vamos a relajar eso
+     más tarde, cuando usemos internamente un alto rango dinámico, pero antes de la salida, asignaremos
+     un mapa de tonos al cero a un rango, por lo que este código no cambiará.
+  
+  4. El rojo pasa de completamente apagado (negro) a completamente encendido (rojo brillante) de izquierda
+     a derecha, y el verde pasa de negro en la parte inferior a completamente en la parte superior. El rojo
+     y el verde juntos hacen el amarillo, por lo que debemos esperar que la esquina superior derecha sea amarilla.     
 
 Crear un archivo de imagen
 -----------------------
 <div class='together'>
-Because the file is written to the program output, you'll need to redirect it to an image file.
-Typically this is done from the command-line by using the `>` redirection operator, like so:
+Debido a que el archivo está escrito en la salida del programa, deberá redirigirlo a un archivo de imagen.
+Normalmente, esto se realiza desde la línea de comandos utilizando el operador de redirección `>`, de esta manera:
 
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     build\Release\inOneWeekend.exe > image.ppm
@@ -146,16 +146,16 @@ This is how things would look on Windows. On Mac or Linux, it would look like th
 </div>
 
 <div class='together'>
-Opening the output file (in `ToyViewer` on my Mac, but try it in your favorite viewer and Google
-“ppm viewer” if your viewer doesn’t support it) shows this result:
+Al abrir el archivo de salida (en `ToyViewer` en mi Mac, pero pruébelo en su visor favorito y
+en el" visor de ppm "de Google si su visor no lo admite) muestra este resultado:
 
   ![Image 1: First PPM image](../images/img-1.01-first-ppm-image.png class=pixel)
 
 </div>
 
 <div class='together'>
-Hooray! This is the graphics “hello world”. If your image doesn’t look like that, open the output
-file in a text editor and see what it looks like. It should start something like this:
+¡Hurra! Esta es el "hola mundo" de los Gráficos. Si su imagen no se ve así, abra el archivo de salida
+en un editor de texto y vea cómo se ve. Debería comenzar algo como esto:
 
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     P3
@@ -176,22 +176,22 @@ file in a text editor and see what it looks like. It should start something like
     [Listing [first-img]: First image output]
 </div>
 
-If it doesn’t, then you probably just have some newlines or something similar that is confusing the
-image reader.
+Si no es así, entonces probablemente solo tengas nuevas líneas o algo similar que esté confundiendo al
+lector de imágenes.
 
-If you want to produce more image types than PPM, I am a fan of `stb_image.h`, a header-only image
-library available on GitHub at https://github.com/nothings/stb.
+Si desea producir más tipos de imágenes que PPM, soy fanático de `stb_image.h`, biblioteca de imágenes 
+de solo encabezado disponible en GitHub en https://github.com/nothings/stb.
 
 
 Agregar un indicador de progreso
 ----------------------------
-Before we continue, let's add a progress indicator to our output. This is a handy way to track the
-progress of a long render, and also to possibly identify a run that's stalled out due to an infinite
-loop or other problem.
+Antes de continuar, agreguemos un indicador de progreso a nuestra salida. Esta es una forma práctica de
+rastrear progreso de un renderizado largo, y también para identificar posiblemente una ejecución que se
+detuvo debido a un bucle infinito u otro problema.
 
 <div class='together'>
-Our program outputs the image to the standard output stream (`std::cout`), so leave that alone and
-instead write to the error output stream (`std::cerr`):
+Nuestro programa genera la imagen en la secuencia de salida estándar (`std::cout`), así que déjelo solo y
+en su lugar escriba en la secuencia de salida de error (`std::cerr`):
 
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ C++
         for (int j = image_height-1; j >= 0; --j) {

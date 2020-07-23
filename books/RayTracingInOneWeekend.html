@@ -2474,7 +2474,7 @@ When we combine them back together, we can write a function to calculate $\mathb
 </div>
 
 <div class='together'>
-And the dielectric material that always refracts is:
+Y el material dieléctrico que siempre refracta es:
 
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ C++
     class dielectric : public material {
@@ -2496,12 +2496,13 @@ And the dielectric material that always refracts is:
             double ref_idx;
     };
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    [Listing [dielectric]: <kbd>[material.h]</kbd> Dielectric material class that always refracts]
+    [Listing [dielectric]: <kbd>[material.h]</kbd> Clase de material dieléctrico que siempre refracta]
 
 </div>
 
 <div class='together'>
 Now we'll update the scene to change the left and center spheres to glass:
+Ahora actualizaremos la escena para cambiar las esferas izquierda y central a vidrio:
 
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ C++
     auto material_ground = make_shared<lambertian>(color(0.8, 0.8, 0.0));
@@ -2511,11 +2512,12 @@ Now we'll update the scene to change the left and center spheres to glass:
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ C++
     auto material_right  = make_shared<metal>(color(0.8, 0.6, 0.2), 1.0);
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    [Listing [two-glass]: <kbd>[main.cc]</kbd> Changing left and center spheres to glass]
+    [Listing [two-glass]: <kbd>[main.cc]</kbd> Cambiar las esferas izquierda y central a vidrio]
 
 </div>
 
 This gives us the following result:
+Esto nos da el siguiente resultado:
 
   ![Image 14: Glass sphere that always refracts
   ](../images/img-1.14-glass-always-refract.png class=pixel)
@@ -2527,19 +2529,25 @@ That definitely doesn't look right. One troublesome practical issue is that when
 material with the higher refractive index, there is no real solution to Snell’s law, and thus there
 is no refraction possible. If we refer back to Snell's law and the derivation of $\sin\theta'$:
 
+Eso definitivamente no se ve bien. Un problema práctico problemático es que cuando el rayo está en el material con el índice de refracción más alto, no hay una solución real a la ley de Snell y, por lo tanto, no es posible la refracción. Si nos referimos nuevamente a la ley de Snell y la derivación de $ \ sin \ theta '$:
+
   $$ \sin\theta' = \frac{\eta}{\eta'} \cdot \sin\theta $$
 
 If the ray is inside glass and outside is air ($\eta = 1.5$ and $\eta' = 1.0$):
+Si el rayo está dentro del vidrio y afuera está el aire ($\eta = 1.5$ y $\eta '= 1.0$):
 
   $$ \sin\theta' = \frac{1.5}{1.0} \cdot \sin\theta $$
 
 The value of $\sin\theta'$ cannot be greater than 1. So, if,
+El valor de $\sin\theta'$ no puede ser mayor que 1. Entonces, si,
 
   $$ \frac{1.5}{1.0} \cdot \sin\theta > 1.0 $$,
 
 <div class="together">
 the equality between the two sides of the equation is broken, and a solution cannot exist. If a
 solution does not exist, the glass cannot refract, and therefore must reflect the ray:
+
+La igualdad entre los dos lados de la ecuación se rompe y no puede existir una solución. Si no existe una solución, el vidrio no puede refractarse y, por lo tanto, debe reflejar el rayo:
 
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ C++
     if (etai_over_etat * sin_theta > 1.0) {
@@ -2550,13 +2558,15 @@ solution does not exist, the glass cannot refract, and therefore must reflect th
         ...
     }
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    [Listing [dielectric]: <kbd>[material.h]</kbd> Determining if the ray can refract]
+    [Listing [dielectric]: <kbd>[material.h]</kbd> Determinar si el rayo puede refractar]
 
 </div>
 
 Here all the light is reflected, and because in practice that is usually inside solid objects, it
 is called “total internal reflection”. This is why sometimes the water-air boundary acts as a
 perfect mirror when you are submerged.
+
+Aquí toda la luz se refleja, y debido a que en la práctica generalmente se encuentra dentro de objetos sólidos, se llama "reflexión interna total". Es por eso que a veces el límite agua-aire actúa como un espejo perfecto cuando estás sumergido.
 
 <div class='together'>
 We can solve for `sin_theta` using the trigonometric qualities:
@@ -2579,12 +2589,13 @@ and
         ...
     }
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    [Listing [dielectric]: <kbd>[material.h]</kbd> Determining if the ray can refract]
+    [Listing [dielectric]: <kbd>[material.h]</kbd> Determinar si el rayo puede refractar]
 
 </div>
 
 <div class='together'>
 And the dielectric material that always refracts (when possible) is:
+Y el material dieléctrico que siempre refracta (cuando es posible) es:
 
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ C++
     class dielectric : public material {
@@ -2619,12 +2630,14 @@ And the dielectric material that always refracts (when possible) is:
             double ref_idx;
     };
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    [Listing [dielectric]: <kbd>[material.h]</kbd> Dielectric material class with reflection]
+    [Listing [dielectric]: <kbd>[material.h]</kbd> Clase de material dieléctrico con reflexión.]
 </div>
 
 <div class='together'>
 Attenuation is always 1 -- the glass surface absorbs nothing. If we try that out with these
 parameters:
+
+La atenuación es siempre 1: la superficie del vidrio no absorbe nada. Si probamos eso con estos parámetros:
 
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ C++
     auto material_ground = make_shared<lambertian>(color(0.8, 0.8, 0.0));
@@ -2632,7 +2645,7 @@ parameters:
     auto material_left   = make_shared<dielectric>(1.5);
     auto material_right  = make_shared<metal>(color(0.8, 0.6, 0.2), 0.0);
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    [Listing [scene-dielectric]: <kbd>[main.cc]</kbd> Scene with dielectric and shiny sphere]
+    [Listing [scene-dielectric]: <kbd>[main.cc]</kbd> Escena con esfera dieléctrica y brillante.]
 
 We get:
 
@@ -2648,6 +2661,8 @@ Aproximación de Schlick
 Now real glass has reflectivity that varies with angle -- look at a window at a steep angle and it
 becomes a mirror. There is a big ugly equation for that, but almost everybody uses a cheap and
 surprisingly accurate polynomial approximation by Christophe Schlick:
+
+Ahora el vidrio real tiene una reflectividad que varía con el ángulo: mire una ventana con un ángulo pronunciado y Se convierte en un espejo. Hay una gran ecuación fea para eso, pero casi todo el mundo usa una aproximación polinómica sorprendentemente precisa por Christophe Schlick:
 
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ C++
     double schlick(double cosine, double ref_idx) {
@@ -2709,6 +2724,8 @@ An interesting and easy trick with dielectric spheres is to note that if you use
 the geometry is unaffected, but the surface normal points inward. This can be used as a bubble to
 make a hollow glass sphere:
 
+Un truco interesante y fácil con esferas dieléctricas es tener en cuenta que si usa un radio negativo, la geometría no se ve afectada, pero la superficie normal apunta hacia adentro. Esto se puede usar como una burbuja para hacer una esfera de vidrio hueca:
+
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ C++
     world.add(make_shared<sphere>(point3( 0.0, -100.5, -1.0), 100.0, material_ground));
     world.add(make_shared<sphere>(point3( 0.0,    0.0, -1.0),   0.5, material_center));
@@ -2739,6 +2756,7 @@ image is not square, the fov is different horizontally and vertically. I always 
 also usually specify it in degrees and change to radians inside a constructor -- a matter of
 personal taste.
 
+Las cámaras, como los dieléctricos, son difíciles de depurar. Así que siempre desarrollo el mío de forma incremental. Primero, vamos permitir un campo de visión ajustable (_fov_). Este es el ángulo que ves a través del portal. Como nuestra imagen no es cuadrada, el fov es diferente horizontal y verticalmente. Siempre uso vertical fov. También lo especifico en grados y cambio a radianes dentro de un constructor, una cuestión de gusto personal.
 
 Geometría de visualización de la cámara
 ------------------------
@@ -2746,12 +2764,14 @@ Geometría de visualización de la cámara
 I first keep the rays coming from the origin and heading to the $z = -1$ plane. We could make it the
 $z = -2$ plane, or whatever, as long as we made $h$ a ratio to that distance. Here is our setup:
 
+Primero mantengo los rayos procedentes del origen y dirigiéndome al plano $ z = -1 $. Podríamos hacerlo el $ z = -2 $ avión, o lo que sea, siempre y cuando hayamos hecho $ h $ una relación a esa distancia. Aquí está nuestra configuración:
+
   ![Figure [cam-view-geom]: Camera viewing geometry](../images/fig-1.14-cam-view-geom.jpg)
 
 </div>
 
 <div class='together'>
-This implies $h = \tan(\frac{\theta}{2})$. Our camera now becomes:
+This implies $h = \tan(\frac{\theta}{2})$. Nuestra cámara ahora se convierte en:
 
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ C++
     class camera {
@@ -2786,7 +2806,7 @@ This implies $h = \tan(\frac{\theta}{2})$. Our camera now becomes:
             vec3 vertical;
     };
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    [Listing [camera-fov]: <kbd>[camera.h]</kbd> Camera with adjustable field-of-view (fov)]
+    [Listing [camera-fov]: <kbd>[camera.h]</kbd> Cámara con campo de visión ajustable (fov)]
 </div>
 
 <div class='together'>
@@ -2839,10 +2859,14 @@ To get an arbitrary viewpoint, let’s first name the points we care about. We�
 where we place the camera _lookfrom_, and the point we look at _lookat_. (Later, if you want, you
 could define a direction to look in instead of a point to look at.)
 
+Para obtener un punto de vista arbitrario, nombremos los puntos que nos interesan. Llamaremos a la posición donde colocamos la cámara _lookfrom_, y al punto donde miramos _lookat_. (Más adelante, si lo desea, puede definir una dirección para mirar en lugar de un punto para mirar).
+
 We also need a way to specify the roll, or sideways tilt, of the camera: the rotation around the
 lookat-lookfrom axis. Another way to think about it is that even if you keep `lookfrom` and `lookat`
 constant, you can still rotate your head around your nose. What we need is a way to specify an “up”
 vector for the camera. This up vector should lie in the plane orthogonal to the view direction.
+
+También necesitamos una forma de especificar el rollo, o la inclinación lateral, de la cámara: la rotación alrededor del eje lookat-lookfrom. Otra forma de pensarlo es que incluso si mantiene constante 'lookfrom' y 'lookat`, aún puede girar la cabeza alrededor de la nariz. Lo que necesitamos es una forma de especificar un "arriba" Vector para la cámara. Este vector hacia arriba debe estar en el plano ortogonal a la dirección de la vista.
 
   ![Figure [cam-view-dir]: Camera view direction](../images/fig-1.15-cam-view-dir.jpg)
 
@@ -2851,12 +2875,16 @@ for the camera. I use the common convention of naming a “view up” (_vup_) ve
 products, and we now have a complete orthonormal basis $(u,v,w)$ to describe our camera’s
 orientation.
 
+De hecho, podemos usar cualquier vector ascendente que queramos y simplemente proyectarlo en este plano para obtener un vector ascendente para la cámara. Utilizo la convención común de nombrar un vector "vista arriba" (_vup_). Un par de cruz productos, y ahora tenemos una base ortonormal completa $ (u, v, w) $ para describir la cámara orientación.
+
   ![Figure [cam-view-up]: Camera view up direction](../images/fig-1.16-cam-view-up.jpg)
 
 Remember that `vup`, `v`, and `w` are all in the same plane. Note that, like before when our fixed
 camera faced -Z, our arbitrary view camera faces -w. And keep in mind that we can -- but we don’t
 have to -- use world up $(0,1,0)$ to specify vup. This is convenient and will naturally keep your
 camera horizontally level until you decide to experiment with crazy camera angles.
+
+Recuerde que `vup`,` v` y `w` están en el mismo plano. Tenga en cuenta que, como antes, cuando nuestro fijo cámara enfrentada -Z, nuestra cámara de vista arbitraria enfrenta -w. Y tenga en cuenta que podemos, pero no tenemos que, usar world up $ (0,1,0) $ para especificar vup. Esto es conveniente y, naturalmente, mantendrá su cámara horizontalmente nivelada hasta que decida experimentar con ángulos de cámara locos.
 
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ C++
     class camera {
@@ -2902,10 +2930,11 @@ camera horizontally level until you decide to experiment with crazy camera angle
             vec3 vertical;
     };
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    [Listing [camera-orient]: <kbd>[camera.h]</kbd> Positionable and orientable camera]
+    [Listing [camera-orient]: <kbd>[camera.h]</kbd> Cámara posicionable y orientable]
 
 <div class='together'>
 We'll change back to the prior scene, and use the new viewpoint:
+Volveremos a la escena anterior y usaremos el nuevo punto de vista:
 
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ C++
     hittable_list world;
@@ -2923,20 +2952,20 @@ We'll change back to the prior scene, and use the new viewpoint:
 
     camera cam(point3(-2,2,1), point3(0,0,-1), vec3(0,1,0), 90, aspect_ratio);
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    [Listing [scene-free-view]: <kbd>[main.cc]</kbd> Scene with alternate viewpoint]
+    [Listing [scene-free-view]: <kbd>[main.cc]</kbd> Escena con punto de vista alternativo]
 
-to get:
+Llegar:
 
   ![Image 18: A distant view](../images/img-1.18-view-distant.png class=pixel)
 
-And we can change field of view:
+Y podemos cambiar el campo de visión:
 
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ C++
     camera cam(point3(-2,2,1), point3(0,0,-1), vup, 20, aspect_ratio);
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     [Listing [change-field-view]: <kbd>[main.cc]</kbd> Change field of view]
 
-to get:
+Llegar:
 
   ![Image 19: Zooming in](../images/img-1.19-view-zoom.png class=pixel)
 
@@ -2950,15 +2979,21 @@ Desenfoque desenfocado
 Now our final feature: defocus blur. Note, all photographers will call it “depth of field” so be
 aware of only using “defocus blur” among friends.
 
+Ahora nuestra última característica: desenfoque desenfoque. Tenga en cuenta que todos los fotógrafos lo llamarán "profundidad de campo", así que tenga en cuenta que solo debe usar "desenfoque desenfocado" entre amigos.
+
 The reason we defocus blur in real cameras is because they need a big hole (rather than just a
 pinhole) to gather light. This would defocus everything, but if we stick a lens in the hole, there
 will be a certain distance where everything is in focus. You can think of a lens this way: all light
 rays coming _from_ a specific point at the focus distance -- and that hit the lens -- will be bent
 back _to_ a single point on the image sensor.
 
+La razón por la que desenfocamos el desenfoque en cámaras reales es porque necesitan un gran agujero (en lugar de solo un agujero) para recoger la luz. Esto desenfocaría todo, pero si clavamos una lente en el agujero, habrá una cierta distancia donde todo está enfocado. Puede pensar en una lente de esta manera: todos los rayos de luz que provienen de un punto específico en la distancia de enfoque, y que golpean la lente, se desviarán hacia un solo punto en el sensor de imagen.
+
 We call the distance between the projection point and the plane where everything is in perfect focus
 the _focus distance_. Be aware that the focus distance is not the same as the focal length -- the
 _focal length_ is the distance between the projection point and the image plane.
+
+Llamamos a la distancia entre el punto de proyección y el plano donde todo está en foco perfecto la _distancia de enfoque_. Tenga en cuenta que la distancia de enfoque no es la misma que la distancia focal: la _longitud focal_ es la distancia entre el punto de proyección y el plano de la imagen.
 
 In a physical camera, the focus distance is controlled by the distance between the lens and the
 film/sensor. That is why you see the lens move relative to the camera when you change what is in
@@ -2966,6 +3001,8 @@ focus (that may happen in your phone camera too, but the sensor moves). The “a
 control how big the lens is effectively. For a real camera, if you need more light you make the
 aperture bigger, and will get more defocus blur. For our virtual camera, we can have a perfect
 sensor and never need more light, so we only have an aperture when we want defocus blur.
+
+En una cámara física, la distancia de enfoque está controlada por la distancia entre la lente y el película / sensor. Es por eso que ve que la lente se mueve en relación con la cámara cuando cambia lo que está enfocado (eso también puede ocurrir en la cámara de su teléfono, pero el sensor se mueve). La "apertura" es un agujero para controle qué tan grande es efectivamente la lente. Para una cámara real, si necesita más luz, haga apertura más grande, y obtendrá más desenfoque borroso. Para nuestra cámara virtual, podemos tener un perfecto sensor y nunca necesitamos más luz, por lo que solo tenemos una apertura cuando queremos desenfocar desenfoque.
 
 
 Una aproximación de lente delgada
@@ -2976,6 +3013,8 @@ then lens, then aperture. Then we could figure out where to send the rays, and f
 it's computed (the image is projected upside down on the film). Graphics people, however, usually
 use a thin lens approximation:
 
+Una cámara real tiene una lente compuesta complicada. Para nuestro código podríamos simular el orden: sensor, luego lente, luego apertura. Luego podríamos averiguar dónde enviar los rayos y voltear la imagen después se calcula (la imagen se proyecta al revés en la película). Sin embargo, las personas con gráficos generalmente usan una aproximación de lente delgada:
+
   ![Figure [cam-lens]: Camera lens model](../images/fig-1.17-cam-lens.jpg)
 
 </div>
@@ -2985,6 +3024,8 @@ We don’t need to simulate any of the inside of the camera. For the purposes of
 outside the camera, that would be unnecessary complexity. Instead, I usually start rays from the
 lens, and send them toward the focus plane (`focus_dist` away from the lens), where everything on
 that plane is in perfect focus.
+
+No necesitamos simular nada del interior de la cámara. A los efectos de renderizar una imagen fuera de la cámara, eso sería una complejidad innecesaria. En cambio, generalmente comienzo rayos desde la lente y los envío hacia el plano de enfoque (`focus_dist` lejos de la lente), donde todo en ese plano está en foco perfecto.
 
   ![Figure [cam-film-plane]: Camera focus plane](../images/fig-1.18-cam-film-plane.jpg)
 
@@ -2999,6 +3040,8 @@ larger the radius, the greater the defocus blur. You can think of our original c
 defocus disk of radius zero (no blur at all), so all rays originated at the disk center
 (`lookfrom`).
 
+Normalmente, todos los rayos de la escena se originan desde el punto `lookfrom`. Para lograr desenfocar desenfoque, generar rayos de escena aleatorios que se originan desde el interior de un disco centrado en el punto 'lookfrom'. Cuanto mayor es el radio, mayor es el desenfoque desenfocado. Puedes pensar que nuestra cámara original tiene una Disco de desenfoque de radio cero (sin desenfoque), por lo que todos los rayos se originaron en el centro del disco (`mirar desde ').
+
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ C++
     vec3 random_in_unit_disk() {
         while (true) {
@@ -3008,7 +3051,7 @@ defocus disk of radius zero (no blur at all), so all rays originated at the disk
         }
     }
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    [Listing [rand-in-unit-disk]: <kbd>[vec3.h]</kbd> Generate random point inside unit disk]
+    [Listing [rand-in-unit-disk]: <kbd>[vec3.h]</kbd> Generar punto aleatorio dentro del disco de la unidad]
 
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ C++
     class camera {
@@ -3070,10 +3113,10 @@ defocus disk of radius zero (no blur at all), so all rays originated at the disk
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ C++
     };
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    [Listing [camera-dof]: <kbd>[camera.h]</kbd> Camera with adjustable depth-of-field (dof)]
+    [Listing [camera-dof]: <kbd>[camera.h]</kbd> Cámara con profundidad de campo ajustable (dof)]
 
 <div class='together'>
-Using a big aperture:
+Usando una gran apertura:
 
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ C++
     point3 lookfrom(3,3,2);
@@ -3086,7 +3129,7 @@ Using a big aperture:
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     [Listing [scene-camera-dof]: <kbd>[main.cc]</kbd> Scene camera with depth-of-field]
 
-We get:
+Nosotros obtenemos:
 
   ![Image 20: Spheres with depth-of-field](../images/img-1.20-depth-of-field.png class=pixel)
 
@@ -3101,6 +3144,7 @@ Un render final
 ---------------
 <div class='together'>
 First let’s make the image on the cover of this book -- lots of random spheres:
+Primero hagamos la imagen en la portada de este libro: muchas esferas aleatorias:
 
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ C++ highlight
     hittable_list random_scene() {
@@ -3199,7 +3243,7 @@ First let’s make the image on the cover of this book -- lots of random spheres
 </div>
 
 <div class='together'>
-This gives:
+Esto da:
 
   ![Image 21: Final scene](../images/img-1.21-book1-final.jpg)
 
@@ -3211,45 +3255,67 @@ they also look a bit strange, and indeed seem to float on cloudy days. A point o
 under a glass ball still has lots of light hitting it because the sky is re-ordered rather than
 blocked.
 
+Algo interesante que podrías notar es que las bolas de cristal realmente no tienen sombras, lo que las hace Parece que están flotando. Esto no es un error: no se ven muchas bolas de cristal en la vida real, donde También se ven un poco extraños, y de hecho parecen flotar en días nublados. Un punto en la gran esfera. debajo de una bola de cristal todavía tiene mucha luz golpeándola porque el cielo se reordena en lugar de bloquearse.
+
 
 Próximos pasos
 -----------
 You now have a cool ray tracer! What next?
+¡Ahora tienes un rastreador de rayos genial! ¿Qué sigue?
 
   1. Lights -- You can do this explicitly, by sending shadow rays to lights, or it can be done
      implicitly by making some objects emit light, biasing scattered rays toward them, and then
      downweighting those rays to cancel out the bias. Both work. I am in the minority in favoring
      the latter approach.
 
+  1. Luces: puede hacer esto explícitamente, enviando rayos de sombra a las luces, o puede hacerse implícitamente haciendo que algunos objetos emitan luz, desviando los rayos dispersos hacia ellos y luego atenuando esos rayos para cancelar el sesgo. Ambos trabajan. Estoy en minoría a favor de este último enfoque.
+
   2. Triangles -- Most cool models are in triangle form. The model I/O is the worst and almost
      everybody tries to get somebody else’s code to do this.
+
+  2. Triángulos: la mayoría de los modelos geniales tienen forma de triángulo. El modelo de E / S es el peor y casi todos intentan obtener el código de otra persona para hacer esto.
 
   3. Surface Textures -- This lets you paste images on like wall paper. Pretty easy and a good thing
      to do.
 
+  3. Texturas de superficie: esto le permite pegar imágenes en papel de pared similar. Bastante fácil y algo bueno que hacer.
+
   4. Solid textures -- Ken Perlin has his code online. Andrew Kensler has some very cool info at his
      blog.
+
+  4. Texturas sólidas: Ken Perlin tiene su código en línea. Andrew Kensler tiene información muy interesante en su blog.
 
   5. Volumes and Media -- Cool stuff and will challenge your software architecture. I favor making
      volumes have the hittable interface and probabilistically have intersections based on density.
      Your rendering code doesn’t even have to know it has volumes with that method.
+
+  5. Volúmenes y medios: cosas geniales y desafiarán su arquitectura de software. Estoy a favor de hacer que los volúmenes tengan la interfaz de hittable y tengan intersecciones probabilísticamente basadas en la densidad. Su código de representación ni siquiera tiene que saber que tiene volúmenes con ese método.
 
   6. Parallelism -- Run $N$ copies of your code on $N$ cores with different random seeds. Average
      the $N$ runs. This averaging can also be done hierarchically where $N/2$ pairs can be averaged
      to get $N/4$ images, and pairs of those can be averaged. That method of parallelism should
      extend well into the thousands of cores with very little coding.
 
-Have fun, and please send me your cool images!
+  6. Paralelismo: ejecute $ N $ copias de su código en núcleos de $ N $ con diferentes semillas aleatorias. Promedio de las corridas de $ N $. Este promedio también se puede hacer jerárquicamente donde se pueden promediar $ N / 2 $ pares para obtener imágenes de $ N / 4 $, y se pueden promediar pares de esos. Ese método de paralelismo debería extenderse bien a los miles de núcleos con muy poca codificación.
+
+  
+  
+  
+  
+  
+¡Diviértete y por favor envíame tus imágenes geniales!
 
 
 
-                               (insert acknowledgments.md.html here)
+                               (insertar acknowledgments.md.html aqui)
 
 
 Citando este libro
 ====================================================================================================
 Consistent citations make it easier to identify the source, location and versions of this work. If
 you are citing this book, we ask that you try to use one of the following forms if possible.
+
+Las citas consistentes facilitan la identificación de la fuente, la ubicación y las versiones de este trabajo. Si está citando este libro, le pedimos que intente utilizar uno de los siguientes formularios si es posible.
 
 Datos básicos
 -----------
